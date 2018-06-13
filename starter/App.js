@@ -12,6 +12,8 @@ import {
   View
 } from 'react-native';
 
+import firebase from 'react-native-firebase'
+
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -21,6 +23,38 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+
+  componentDidMount=async()=>{
+    const enabled = await firebase.messaging().hasPermission();
+if (enabled) {
+    // user has permissions
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+        // user has a device token
+        this.onTokenRefreshListener = firebase.messaging().onTokenRefresh(fcmToken=> {
+          // Process your token as required
+      });
+
+      await firebase.messaging().subscribeToTopic('test')
+      this.messageListener = firebase.messaging().onMessage((message) => {
+        // Process your message as required
+        console.log(message);
+    });
+    } else {
+        // user doesn't have a device token yet
+    }
+} else {
+    // user doesn't have permission
+
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+  } catch (error) {
+      // User has rejected permissions
+  }
+}
+
+  }
   render() {
     return (
       <View style={styles.container}>

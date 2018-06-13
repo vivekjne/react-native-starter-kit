@@ -36,6 +36,29 @@ if (enabled) {
       });
 
       await firebase.messaging().subscribeToTopic('test')
+
+      this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification) => {
+        console.log(notification);
+        
+        // Process your notification as required
+        // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+    });
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
+      console.log(notification);
+      
+
+
+      // Process your notification as required
+    });
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      // Get the action triggered by the notification being opened
+      const action = notificationOpen.action;
+      console.log(action)
+      // Get information about the notification that was opened
+      const notification = notificationOpen.notification;
+      console.log(notification)
+  });
       this.messageListener = firebase.messaging().onMessage((message) => {
         // Process your message as required
         console.log(message);

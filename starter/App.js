@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 
 import firebase from 'react-native-firebase'
-
+import Navigator from './Navigator'
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' +
     'Cmd+D or shake for dev menu',
@@ -22,6 +22,7 @@ const instructions = Platform.select({
 });
 
 type Props = {};
+console.disableYellowBox = true
 export default class App extends Component<Props> {
 
   componentDidMount=async()=>{
@@ -80,17 +81,7 @@ if (enabled) {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <Navigator />
     );
   }
 }
